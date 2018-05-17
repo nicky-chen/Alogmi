@@ -7,7 +7,7 @@ import java.util.Queue;
  * @author nicky_chin [shuilianpiying@163.com]
  * @since --created on 2018/5/16 at 17:04
  */
-public abstract class AbstractBTreeNode <K extends Comparable<K>> {
+public abstract class AbstractBTreeNode<K extends Comparable<K>> {
 
     /**
      * 度为T的节点，根为1个节点，第二层至少为2个节点，
@@ -24,12 +24,14 @@ public abstract class AbstractBTreeNode <K extends Comparable<K>> {
 
     /**
      * 判断是否是叶子节点
+     *
      * @return true if is leaf,false if not.
      */
     abstract boolean isLeaf();
 
     /**
      * 搜索关键字
+     *
      * @param key the key to search
      * @return key in the B-tree or null if key does not exist in the tree.
      */
@@ -38,6 +40,7 @@ public abstract class AbstractBTreeNode <K extends Comparable<K>> {
     /**
      * Insert a key in to a node when the node is not full.
      * 插入关键字
+     *
      * @param key the key to insert
      * @throws java.lang.RuntimeException if node is full
      */
@@ -57,6 +60,7 @@ public abstract class AbstractBTreeNode <K extends Comparable<K>> {
      * <p>Insert a key in to B-Tree.</p>
      * <p>Insert a key into current node.</p>
      * 插入操作
+     *
      * @param key the key to insert
      * @throws java.lang.RuntimeException if current is full.
      */
@@ -143,6 +147,7 @@ public abstract class AbstractBTreeNode <K extends Comparable<K>> {
     /**
      * Replace given index key with a new key
      * 替换key
+     *
      * @param newKey      the new key to insert in
      * @param oldKeyIndex old key index
      * @return the key be replaced or null if index is invalid
@@ -221,7 +226,8 @@ public abstract class AbstractBTreeNode <K extends Comparable<K>> {
 
     /**
      * Split a full child to two child node.
-     *分裂子节点
+     * 分裂子节点
+     *
      * @param child child index to split
      * @throws java.lang.RuntimeException is child to spilt is not full
      */
@@ -240,6 +246,7 @@ public abstract class AbstractBTreeNode <K extends Comparable<K>> {
     /**
      * Merge current node with another .
      * 合并
+     *
      * @param middle  middle key of the two node
      * @param sibling sibling node to merge
      * @throws java.lang.RuntimeException if keys of either node exceed degree-1.
@@ -257,6 +264,7 @@ public abstract class AbstractBTreeNode <K extends Comparable<K>> {
     /**
      * Key amount of current node.
      * 当前节点的关键字个数
+     *
      * @return key amount of current node.
      */
     abstract int nkey();
@@ -315,20 +323,20 @@ public abstract class AbstractBTreeNode <K extends Comparable<K>> {
      * Recursively traverse the B-Tree,constitute a string.
      *
      * @param root root of B-Tree.
-     * @param <K> Type of key of B-Tree
+     * @param <K>  Type of key of B-Tree
      * @return String of B-Tree.
      */
-    static <K extends Comparable<K>> String BTreeToString(AbstractBTreeNode<K> root){
+    static <K extends Comparable<K>> String BTreeToString(AbstractBTreeNode<K> root) {
         StringBuffer sb = new StringBuffer();
         AbstractBTreeNode node;
         Queue<AbstractBTreeNode> queue = new LinkedList<>();
         queue.add(root);
         String newLine = System.getProperty("line.separator");
-        while (!queue.isEmpty()){
+        while (!queue.isEmpty()) {
             node = queue.poll();
             sb.append(node).append(newLine);
             int i = 0;
-            while (node.getChild(i) != null){
+            while (node.getChild(i) != null) {
                 queue.offer(node.getChild(i));
                 i++;
             }

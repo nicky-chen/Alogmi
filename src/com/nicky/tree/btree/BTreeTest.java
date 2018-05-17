@@ -11,8 +11,11 @@ import java.util.*;
 public class BTreeTest {
 
     private static final int INITIAL_CAPACITY = 12;
+
     private final List<Integer> keys = new ArrayList<>(INITIAL_CAPACITY);
+
     private final List<List<Integer[]>> insertResults = new ArrayList<>(INITIAL_CAPACITY);
+
     private final List<List<Integer[]>> deleteResults = new ArrayList<>(INITIAL_CAPACITY);
 
     public void before() {

@@ -5,11 +5,14 @@ package com.nicky.tree.btree;
  * @since --created on 2018/5/16 at 17:05
  * 内节点（子节点）
  */
-public class BTreeInternalNode <K extends Comparable<K>> extends AbstractBTreeNode<K> {
+public class BTreeInternalNode<K extends Comparable<K>> extends AbstractBTreeNode<K> {
 
     private final Object[] keys; //关键字集合
+
     private final AbstractBTreeNode<K>[] children; //子节点集合
+
     private int nkey = 0; // 当前节点已有的关键字个数
+
     private int nchild = 0; //当前节点已有子节点个数
 
     BTreeInternalNode(int degree) {
@@ -19,75 +22,63 @@ public class BTreeInternalNode <K extends Comparable<K>> extends AbstractBTreeNo
         children = new AbstractBTreeNode[2 * degree];
     }
 
-    @Override
-    protected boolean isLeaf() {
+    @Override protected boolean isLeaf() {
         return false;
     }
 
-
-    @Override
-    K getKey(int idx) {
+    @Override K getKey(int idx) {
         return (K) keys[idx];
     }
 
-    @Override
-    protected K setKey(K newKey, int oldKeyIndex) {
+    @Override protected K setKey(K newKey, int oldKeyIndex) {
         K old = (K) keys[oldKeyIndex];
         keys[oldKeyIndex] = newKey;
         return old;
     }
 
-    @Override
-    protected void setChild(AbstractBTreeNode<K> sub, int index) {
+    @Override protected void setChild(AbstractBTreeNode<K> sub, int index) {
         children[index] = sub;
     }
 
-    @Override
-    AbstractBTreeNode<K> getChild(int index) {
+    @Override AbstractBTreeNode<K> getChild(int index) {
         if (index >= 0 && index < children.length) {
             return children[index];
         }
         return null;
     }
 
-    @Override
-    protected int setNKey(int nkey) {
+    @Override protected int setNKey(int nkey) {
         int old = this.nkey;
         this.nkey = nkey;
         return old;
     }
 
-    @Override
-    int nkey() {
+    @Override int nkey() {
         return nkey;
     }
 
-    @Override
-    int nchild() {
+    @Override int nchild() {
         return nchild;
     }
 
-    @Override
-    protected int setNChild(int nchild) {
+    @Override protected int setNChild(int nchild) {
         int old = this.nchild;
         this.nchild = nchild;
         return old;
     }
 
-
-    @Override
-    K search(K key) {
+    @Override K search(K key) {
         int index = indexOfKey(key);
         if (index >= 0) {
             return (K) keys[index];
         }
         index = 0;
-        while (key.compareTo((K) keys[index++]) > 0) ;
+        while (key.compareTo((K) keys[index++]) > 0)
+            ;
         return children[index].search(key);
     }
 
-    @Override
-    void insertNotFull(K key) {
+    @Override void insertNotFull(K key) {
         checkNotFull();
         int i = 0;
         while (i < nkey && key.compareTo((K) keys[i]) >= 0) {
@@ -103,8 +94,7 @@ public class BTreeInternalNode <K extends Comparable<K>> extends AbstractBTreeNo
         this.children[i].insertNotFull(key);
     }
 
-    @Override
-    void deleteNotEmpty(K key) {
+    @Override void deleteNotEmpty(K key) {
         //key in this node
         if (this.existsKey(key)) {
             int index = indexOfKey(key);
@@ -133,7 +123,7 @@ public class BTreeInternalNode <K extends Comparable<K>> extends AbstractBTreeNo
         }
 
         //key may exist in child
-        else{
+        else {
             int i = 0;
             //find proper child the key may exists in
             while (i < nkey) {
@@ -191,19 +181,15 @@ public class BTreeInternalNode <K extends Comparable<K>> extends AbstractBTreeNo
 
     }
 
-    @Override
-    protected void splitChild(int child) {
+    @Override protected void splitChild(int child) {
         AbstractBTreeNode<K> old = children[child];
-        AbstractBTreeNode<K> neo = old.isLeaf()
-                ? new BTreeLeaf<>(degree)
-                : new BTreeInternalNode<>(degree);
+        AbstractBTreeNode<K> neo = old.isLeaf() ? new BTreeLeaf<>(degree) : new BTreeInternalNode<>(degree);
         K middle = old.splitSelf(neo); //插入分裂操作
         this.insertKey(middle);
         this.insertChild(neo, child + 1);
     }
 
-    @Override
-    protected K splitSelf(AbstractBTreeNode<K> newNode) {
+    @Override protected K splitSelf(AbstractBTreeNode<K> newNode) {
         if (!(newNode instanceof BTreeInternalNode)) {
             throw new RuntimeException("Instance not match.");
         }
@@ -235,8 +221,7 @@ public class BTreeInternalNode <K extends Comparable<K>> extends AbstractBTreeNo
         return middle;
     }
 
-    @Override
-    protected void merge(K middle, AbstractBTreeNode<K> sibling) {
+    @Override protected void merge(K middle, AbstractBTreeNode<K> sibling) {
         if (!(sibling instanceof BTreeInternalNode)) {
             throw new RuntimeException("Sibling is not leaf node");
         }
@@ -250,9 +235,7 @@ public class BTreeInternalNode <K extends Comparable<K>> extends AbstractBTreeNo
         }
     }
 
-
-    @Override
-    public String toString() {
+    @Override public String toString() {
         StringBuffer sb = new StringBuffer();
         sb.append(" internal node ---- ").append("size: ").append(nkey).append(" keys:").append("[");
         for (int i = 0; i < nkey; i++) {

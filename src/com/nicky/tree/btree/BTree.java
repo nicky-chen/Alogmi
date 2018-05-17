@@ -45,7 +45,7 @@ public class BTree <K extends Comparable<K>> {
 
     /**
      * Delete a key from B-Tree,if key doesn't exist in current tree,will effect nothing.
-     *
+     *删除key
      * @param key key to delete.
      */
     public void delete(K key){
