@@ -24,7 +24,8 @@ public class InsertSortApp {
 
         arr.display();
 
-        arr.insertionSort();
+        //arr.insertionSort();
+        arr.binaryInsertionSort();
         System.out.println("===================");
         arr.display();
     }
